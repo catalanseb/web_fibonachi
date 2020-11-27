@@ -11,13 +11,12 @@ export class AppComponent implements OnInit {
   formMetodoFibonachi: FormGroup;
   submitted = false;
   valido: boolean = false;
+  params: number = 0;
+  nesimo: number = 0;
 
   constructor(private apiService: ApiServiceService ) {}
 
-  ngOnInit(): void {
-    this.apiService.getEnemFib(7).subscribe(resp => {
-      console.log(JSON.parse(resp).nesimo);
-    });
+  ngOnInit(): void {    
     this.resetForm();
   }
   private resetForm() {
@@ -36,7 +35,12 @@ export class AppComponent implements OnInit {
       return;
     }
 
+    this.params = this.formMetodoFibonachi.value.numero;
+    this.apiService.getEnemFib(this.params).subscribe(resp => {
+      this.nesimo = JSON.parse(resp).nesimo;
+    });
 
+    this.resetForm();
   }
 
   get f() { return this.formMetodoFibonachi.controls; }
